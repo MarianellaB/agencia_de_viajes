@@ -2,14 +2,13 @@ from fastapi import APIRouter, Depends, status, Response, HTTPException
 from fastapi.responses import PlainTextResponse
 from sqlalchemy.orm import Session
 from typing import List, Optional
-
 from app.database import bd
 from . import schema
 from . import services
 from . import validation
 from app.core import security
 from app.user import validation as user_validation, services as user_services , schema as user_schema
-from app.catalog import validation as catalog_validation
+from app.flight import validation as flight_validation
 
 api_router = APIRouter(tags = ["Booking"])
 
@@ -23,7 +22,7 @@ async def get_booking_by_id(id: int, bd_session: Session = Depends(bd.get_bd_ses
 
 @api_router.get('/booking/flight/{idflight}', response_model = List[schema.Booking])
 async def get_bookings_by_idflight(idflight: int, bd_session: Session = Depends(bd.get_bd_session)):
-    existingflight = await catalog_validation.verify_flight_exist(idflight, bd_session)
+    existingflight = await flight_validation.verify_flight_exist(idflight, bd_session)
     if not existingflight:
         raise HTTPException(status_code=404, detail="Non-existent flight")
     
@@ -48,7 +47,7 @@ async def get_bookings_by_status_and_customername(status: Optional[schema.Bookin
 @api_router.post("/booking/flight/{idflight}/user/{iduser}", status_code = status.HTTP_201_CREATED, response_model=schema.Booking)
 async def create_booking(idflight: int, iduser: int, booking_in: schema.BookingCreate, bd_session: Session = Depends(bd.get_bd_session),
                          current_user: user_schema.User = Depends(security.get_current_user)):
-    existingflight = await catalog_validation.verify_flight_exist(idflight, bd_session)
+    existingflight = await flight_validation.verify_flight_exist(idflight, bd_session)
     if not existingflight:
         raise HTTPException(status_code=404, detail="Non-existent flight")
     

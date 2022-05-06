@@ -3,7 +3,7 @@ from pydantic import BaseModel, constr
 from typing import Optional
 from enum import Enum
 from app.user.schema import User
-from app.catalog.schema import Flight
+from app.flight.schema import Flight
 
 
 class Booking_Base(BaseModel):

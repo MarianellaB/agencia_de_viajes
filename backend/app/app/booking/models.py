@@ -1,11 +1,9 @@
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Boolean
-
-
 from app.user.models import User
 from app.database.bd import Base
 from datetime import datetime
-from app.catalog.models import Flight
+from app.flight.models import Flight
 
 class Booking(Base):
     __tablename__ = "bookings"

@@ -2,8 +2,6 @@ from typing import Any
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends, status, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
-
-
 from app.core.security import create_access_token
 from app.user.services import authenticate
 from app.database import bd 

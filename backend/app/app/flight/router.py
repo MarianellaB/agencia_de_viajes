@@ -10,13 +10,13 @@ from . import validation
 from app.core import security
 from app.user import schema as user_schema
 
-api_router = APIRouter(tags = ["Catalog"])
+api_router = APIRouter(tags = ["Booking"])
 
-@api_router.get("/catalog/all", response_model = List[schema.Flight])
+@api_router.get("/Booking/all", response_model = List[schema.Flight])
 async def get_all_flights(bd_session: Session = Depends(bd.get_bd_session)):
     return await services.get_all_flights(bd_session)
 
-@api_router.get("/catalog/", response_model=List[schema.Flight])
+@api_router.get("/Booking/", response_model=List[schema.Flight])
 async def get_flights(departureAirportCode: str, arrivalAirportCode: str, departureDate: date, bd_session: Session = Depends(bd.get_bd_session)):
     flights = await services.get_flights(departureAirportCode,arrivalAirportCode,departureDate,bd_session)
     if not flights:
@@ -24,7 +24,7 @@ async def get_flights(departureAirportCode: str, arrivalAirportCode: str, depart
 
     return flights
 
-@api_router.get("/catalog/{airportCode}", response_model=List[schema.Flight])
+@api_router.get("/Booking/{airportCode}", response_model=List[schema.Flight])
 async def get_flights_by_airportcode_and_departuredate(airportCode: str, departureDate: Optional[date] = None, bd_session: Session = Depends(bd.get_bd_session)):
     flights = await services.get_flights_by_departureairportcode_and_departuredate(airportCode,departureDate,bd_session)
     if not flights:
@@ -32,13 +32,13 @@ async def get_flights_by_airportcode_and_departuredate(airportCode: str, departu
 
     return flights
 
-@api_router.post("/catalog/", status_code = status.HTTP_201_CREATED, response_model=schema.Flight)
+@api_router.post("/Booking/", status_code = status.HTTP_201_CREATED, response_model=schema.Flight)
 async def create_flight(flight_in: schema.FlightCreate, bd_session: Session = Depends(bd.get_bd_session),
                         current_user: user_schema.User = Depends(security.get_current_user)):
     new_flight = await services.create_new_flight(flight_in, bd_session = bd_session)
     return new_flight
 
-@api_router.put('/catalog/{id}', status_code = status.HTTP_201_CREATED)
+@api_router.put('/Booking/{id}', status_code = status.HTTP_201_CREATED)
 async def update_flight(id: int, flight: schema.FlightUpdate, bd_session: Session = Depends(bd.get_bd_session),
                         current_user: user_schema.User = Depends(security.get_current_user)):
     existingflight = await validation.verify_flight_exist(id, bd_session)
@@ -48,7 +48,7 @@ async def update_flight(id: int, flight: schema.FlightUpdate, bd_session: Sessio
     new_flight = await services.update_flight(id, flight, bd_session)
     return new_flight
 
-@api_router.delete("/catalog/{id}", status_code=status.HTTP_200_OK, response_class=PlainTextResponse)
+@api_router.delete("/Booking/{id}", status_code=status.HTTP_200_OK, response_class=PlainTextResponse)
 async def delete_flight(id: int, bd_session: Session = Depends(bd.get_bd_session),
                         current_user: user_schema.User = Depends(security.get_current_user)):
     existingflight = await validation.verify_flight_exist(id, bd_session)

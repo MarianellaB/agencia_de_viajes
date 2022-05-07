@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
-from app.database.db import Base
+from app.database.bd import Base
 from app.core import hashing
 
 class User(Base):
@@ -8,7 +8,7 @@ class User(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     fullname = Column(String(255))
-    username = Column(String(255), unique=True) #username is email
+    username = Column(String(255), unique=True) 
     password = Column(String(255))
 
     booking = relationship("Booking", back_populates="customer")

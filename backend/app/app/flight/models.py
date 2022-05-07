@@ -1,26 +1,24 @@
-from datetime import date
-import string
-from sqlalchemy import column, integer, String, Boolean
+from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.orm import relationship
-from database.Session import Base
+from app.database.bd import Base
 
+class Flight(Base):
+    __tablename__ = "flights"
 
-class flight(Base):
-    __tablename__="flight"
-    id = column(integer, primary_key=True, autoincrement = True)
-    departuredate= column(String(50))
-    departureAirportCode= column(String(50))
-    departureAirportName= column(String(50))r
-    departureCity= column(String(50))
-    departureLocale= column(String(50))
-    arrivalDate= column(String(50))
-    arrivalAirportCode= column(String(50))
-    arrivalAirportName= column(String(50))
-    arrivalCity= column(String(50))
-    arrivalLocale= column(String(50))
-    ticketPrice= column(integer)
-    ticketCurrency= column(String(50))
-    flightNumber= column(integer)
-    seatCapacity= column(integer)
-    
-    
+    id = Column(Integer, primary_key = True, autoincrement = True)
+    departureDate = Column(DateTime)
+    departureAirportCode = Column(String(60))
+    departureAirportName = Column(String(100))
+    departureCity = Column(String(255))
+    departureLocale = Column(String(255))
+    arrivalDate = Column(DateTime)
+    arrivalAirportCode = Column(String(60))
+    arrivalAirportName = Column(String(100))
+    arrivalCity = Column(String(255))
+    arrivalLocale = Column(String(255))
+    ticketPrice = Column(Integer)
+    ticketCurrency = Column(String(60))
+    flightNumber = Column(Integer)
+    seatCapacity = Column(Integer)
+    booking = relationship("Booking", back_populates="flight")
+
